@@ -3,18 +3,44 @@
     accent-color: var(--color-accent);
 }
 
-body {
-    font: 100%/1.5 system-ui;
-    max-width: 100ch;
-    margin: 0 auto;
-    padding: 1rem;
+input,
+textarea,
+button {
+    font: inherit;
 }
 
-.profile-pic {
-    max-width: 200px;
-    height: auto;
+form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem 1rem;
+    /* row gap, column gap */
+    max-width: 600px;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+label {
     display: block;
-    margin: 1rem 0;
+    margin-block: 0.25rem;
+}
+
+input,
+textarea,
+button {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    grid-column: 1 / -1;
+    background-color: var(--color-accent, #2e7d32);
+    /* fallback green */
+    color: white;
+    font-weight: bold;
+    margin-top: 1rem;
+    cursor: pointer;
 }
 
 nav ul,

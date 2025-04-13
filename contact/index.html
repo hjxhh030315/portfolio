@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -20,17 +20,31 @@
             <li><a href="https://github.com/hjxhh030315" target="_blank">GitHub</a></li>
         </ul>
     </nav>
-    <form action=" Mail to:jih063@ucsd.edu" method="POST" enctype="text/plain">
-        <!-- <label for="name">Name:</label>
-        <input type='text' id="name" name='name'><br> -->
+    <!-- <form action=" Mail to:jih063@ucsd.edu" method="POST" enctype="text/plain">
         <label for='email'>Email:</label>
         <input type='email' id='email' name='email'><br>
+        
         <label for='subject'>Subject:</label>
         <input id='subject' name='subject'><br>
         <label for="message">Body:</label>
         <textarea id="message" name="body"></textarea><br>
         <input type='submit' value="Submit">
+    </form> -->
+
+    <form action=" Mail to:jih063@ucsd.edu" method="POST" enctype="text/plain">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject">
+
+        <label for="message">Body:</label>
+        <textarea id="message" name="message"></textarea>
+
+        <button type="submit">Submit</button>
     </form>
+
+
 </body>
 
 </html>

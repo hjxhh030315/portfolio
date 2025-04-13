@@ -3,18 +3,37 @@
     accent-color: var(--color-accent);
 }
 
-body {
-    font: 100%/1.5 system-ui;
-    max-width: 100ch;
-    margin: 0 auto;
-    padding: 1rem;
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    gap: 1em;
+    margin-top: 2rem;
 }
 
-.profile-pic {
-    max-width: 200px;
-    height: auto;
-    display: block;
-    margin: 1rem 0;
+.projects article {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+}
+
+.projects h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+h1 {
+    font-size: 400%;
+    margin-bottom: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.1;
+    text-wrap: balance;
 }
 
 nav ul,
