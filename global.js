@@ -19,6 +19,57 @@ function $$(selector, context = document) {
 //     currentLink.classList.add('current');
 // }
 
+export async function fetchJSON(url) {
+    try {
+        // Fetch the JSON file from the given URL
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch projects: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching or parsing JSON data:', error);
+    }
+}
+
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+    if (!containerElement) {
+        console.error('Invalid container element provided.');
+        return;
+    }
+
+
+    const validHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    if (!validHeadings.includes(headingLevel)) {
+        console.warn(`Invalid heading level "${headingLevel}" provided, defaulting to "h2".`);
+        headingLevel = 'h2';
+    }
+    containerElement.innerHTML = '';
+
+
+    for (let project of projects) {
+        const article = document.createElement('article');
+
+        article.innerHTML = `
+        <${headingLevel}>${project.title ?? 'Untitled Project'}</${headingLevel}>
+        <img src="${project.image ?? ''}" alt="${project.title ?? 'Project Image'}">
+        <p>${project.description ?? 'No description provided.'}</p>
+      `;
+
+        containerElement.appendChild(article);
+    }
+}
+
+// Fetch GitHub user data dynamically
+export async function fetchGitHubData(username) {
+    return fetchJSON(`https://api.github.com/users/${username}`);
+}
+
+
+
+
 document.body.insertAdjacentHTML(
     'afterbegin',
     `
@@ -121,16 +172,18 @@ document
 
 const form = document.querySelector("form");
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault(); // stop default submission
+if (form) {
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-    const data = new FormData(form);
-    const params = [];
+        const data = new FormData(form);
+        const params = [];
 
-    for (let [name, value] of data) {
-        params.push(`${name}=${encodeURIComponent(value)}`);
-    }
+        for (let [name, value] of data) {
+            params.push(`${name}=${encodeURIComponent(value)}`);
+        }
 
-    const url = `${form.action}?${params.join("&")}`;
-    location.href = url;
-});
+        const url = `${form.action}?${params.join("&")}`;
+        location.href = url;
+    });
+}
