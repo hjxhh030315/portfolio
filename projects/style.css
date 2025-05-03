@@ -79,3 +79,16 @@ nav a:not(.current):hover::after {
     height: 2px;
     transition: all 0.3s ease;
 }
+
+.project-year {
+    font-size: 0.8em;
+    color: gray;
+    font-style: italic;
+    margin-top: 0.5em;
+}
+
+#projects-pie-plot {
+    max-width: 20em;
+    margin-block: 2em;
+    overflow: visible;
+}

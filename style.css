@@ -175,3 +175,119 @@ nav a:hover {
     line-height: 1.4;
     margin: 0.5rem 0 0;
 }
+
+.project-year {
+    font-size: 0.8em;
+    color: gray;
+    font-style: italic;
+    margin-top: 0.5em;
+}
+
+#projects-pie-plot {
+    max-width: 20em;
+    margin-block: 2em;
+    overflow: visible;
+    display: block;
+}
+
+.chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+#projects-pie-plot {
+    max-width: 20em;
+    flex-shrink: 0;
+}
+
+
+/* Container for pie chart and legend */
+
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-block: 2rem;
+}
+
+
+/* SVG pie chart sizing */
+
+#projects-pie-plot {
+    max-width: 20em;
+    flex-shrink: 0;
+}
+
+
+/* Pie wedges transition + interactivity */
+
+#projects-pie-plot path {
+    cursor: pointer;
+    transition: 300ms;
+}
+
+
+/* Dim all non-hovered wedges */
+
+#projects-pie-plot:has(path:hover) path:not(:hover) {
+    opacity: 0.5;
+}
+
+
+/* Highlighted (selected) wedge and legend entry */
+
+.selected {
+    --color: oklch(60% 45% 0) !important;
+    /* gold-orange-ish */
+    /* Apply fill to pie wedge */
+    fill: var(--color);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 1rem;
+    margin: 1rem auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    max-width: fit-content;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.legend-item:hover {
+    opacity: 0.75;
+}
+
+.legend-item.selected {
+    --color: oklch(60% 45% 0) !important;
+    font-weight: 700;
+}
+
+.legend-item .swatch {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: var(--color);
+    display: inline-block;
+    flex-shrink: 0;
+}
