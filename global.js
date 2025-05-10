@@ -143,6 +143,7 @@ const BASE_PATH = (location.hostname === "localhost" || location.hostname === "1
 let pages = [
     { url: '', title: 'Home' },
     { url: 'projects/', title: 'Projects' },
+    { url: 'meta/', title: 'Meta' },
     { url: 'resume/', title: 'Resume' },
     { url: 'contact/', title: 'Contact' },
     { url: 'https://github.com/hjxhh030315', title: 'GitHub', external: true }

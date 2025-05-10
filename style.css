@@ -276,6 +276,7 @@ nav a:hover {
 
 .legend-item:hover {
     opacity: 0.75;
+    cursor: pointer;
 }
 
 .legend-item.selected {
