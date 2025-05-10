@@ -292,3 +292,81 @@ nav a:hover {
     display: inline-block;
     flex-shrink: 0;
 }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+    gap: 1rem 2rem;
+    margin-top: 2rem;
+}
+
+.stats dt {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.stats dd {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+
+/* Tooltip layout */
+
+
+/* Tooltip container */
+
+dl.info.tooltip {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 0.5em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 1em;
+    backdrop-filter: blur(4px);
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+/* Hide the tooltip smoothly */
+
+dl.info.tooltip[hidden] {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+/* Show it when not hidden */
+
+dl.info.tooltip:not([hidden]) {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Dot hover interaction */
+
+circle {
+    transition: 200ms;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+circle:hover {
+    transform: scale(1.5);
+}
+
+.tooltip {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 0.5em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    pointer-events: none;
+    z-index: 1000;
+}
