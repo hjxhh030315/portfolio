@@ -1,6 +1,8 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 let xScale, yScale;
 let globalCommits = [];
+let filteredCommits = [];
+
 
 async function loadData() {
     const data = await d3.csv('loc.csv', (row) => ({
@@ -248,6 +250,46 @@ export function renderScatterPlot(data, commits) {
     svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
+function updateScatterPlot(data, commits) {
+    const svg = d3.select('#chart svg');
+
+    // Update x-scale domain
+    xScale.domain(d3.extent(commits, (d) => d.datetime));
+
+    // Update x-axis
+    const xAxisGroup = svg.select('g.x-axis');
+    xAxisGroup.selectAll('*').remove();
+    xAxisGroup.call(d3.axisBottom(xScale));
+
+    // Radius scale (use square root for area perception)
+    const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+    const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
+
+    // Update dots
+    const dots = svg.select('g.dots');
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+
+    dots
+        .selectAll('circle')
+        .data(sortedCommits, (d) => d.id)
+        .join('circle')
+        .attr('cx', (d) => xScale(d.datetime))
+        .attr('cy', (d) => yScale(d.hourFrac))
+        .attr('r', (d) => rScale(d.totalLines))
+        .attr('fill', 'steelblue')
+        .style('fill-opacity', 0.7)
+        .on('mouseenter', (event, commit) => {
+            d3.select(event.currentTarget).style('fill-opacity', 1);
+            renderTooltipContent(commit);
+            updateTooltipVisibility(true);
+            updateTooltipPosition(event);
+        })
+        .on('mouseleave', () => {
+            d3.select(event.currentTarget).style('fill-opacity', 0.7);
+            updateTooltipVisibility(false);
+        });
+}
+
 function brushed(event) {
     const selection = event.selection;
 
@@ -269,8 +311,7 @@ function isCommitSelected(selection, commit) {
 
 export function renderSelectionCount(selection) {
     const selectedCommits = selection ?
-        globalCommits.filter((d) => isCommitSelected(selection, d)) :
-        [];
+        globalCommits.filter((d) => isCommitSelected(selection, d)) : [];
 
     const countElement = document.querySelector('#selection-count');
     countElement.textContent = `${selectedCommits.length || 'No'} commits selected`;
@@ -279,8 +320,7 @@ export function renderSelectionCount(selection) {
 
 export function renderLanguageBreakdown(selection) {
     const selectedCommits = selection ?
-        globalCommits.filter((d) => isCommitSelected(selection, d)) :
-        [];
+        globalCommits.filter((d) => isCommitSelected(selection, d)) : [];
 
     const container = document.getElementById('language-breakdown');
     if (!selectedCommits.length) {
@@ -326,5 +366,40 @@ function renderTooltipContent(commit) {
 
 let data = await loadData();
 let commits = processCommits(data);
-renderCommitInfo(data, commits); // optional
+let commitProgress = 100;
+
+// Setup time scale using min/max datetime
+let timeScale = d3
+    .scaleTime()
+    .domain(d3.extent(commits, d => d.datetime))
+    .range([0, 100]);
+
+let commitMaxTime = timeScale.invert(commitProgress);
+
+// Event handler for slider input
+function onTimeSliderChange() {
+    const slider = document.getElementById('commit-progress');
+    const timeLabel = document.getElementById('commit-time');
+
+    commitProgress = +slider.value;
+    commitMaxTime = timeScale.invert(commitProgress);
+
+    timeLabel.textContent = commitMaxTime.toLocaleString('en-US', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+    });
+
+    filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+
+    updateScatterPlot(data, filteredCommits);
+}
+
+
+document
+    .getElementById('commit-progress')
+    .addEventListener('input', onTimeSliderChange);
+
+
+renderCommitInfo(data, commits); // optiona    
 renderScatterPlot(data, commits); // this is the key
+onTimeSliderChange(); // initial display
